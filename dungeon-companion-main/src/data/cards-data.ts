@@ -1,0 +1,1241 @@
+// ============================================
+// D&D 2003 Board Game – Complete Card Database
+// ============================================
+
+export type CardCategory = "monster" | "weapon" | "artifact" | "potion" | "spell" | "boobyTrap";
+
+export interface MonsterCard {
+  category: "monster";
+  id: string;
+  name: string;
+  count: number;
+  ac: number;
+  hp: number;
+  move: number;
+  undead?: boolean;
+  description: string;
+  specialAbility?: string;
+  specialAbilityDetail?: string;
+  dice: string[];
+  rangedDice?: string[];
+}
+
+export interface WeaponCard {
+  category: "weapon";
+  id: string;
+  name: string;
+  level: number;
+  type: "melee" | "ranged" | "thrown";
+  description: string;
+  dice: string[];
+  specialAbility?: string;
+  powerAttack?: boolean;
+  protectsFromParalysis?: boolean;
+}
+
+export interface ArtifactCard {
+  category: "artifact";
+  id: string;
+  name: string;
+  level: number;
+  description: string;
+  effect: string;
+  discardCondition?: string;
+}
+
+export interface PotionCard {
+  category: "potion";
+  id: string;
+  name: string;
+  level: number;
+  description: string;
+  effect: string;
+}
+
+export interface SpellCard {
+  category: "spell";
+  id: string;
+  name: string;
+  level: number;
+  description: string;
+  effect: string;
+  dice: string[];
+  restriction?: string;
+  singleUse?: boolean;
+}
+
+export interface BoobyTrapCard {
+  category: "boobyTrap";
+  id: string;
+  name: string;
+  level: number;
+  description: string;
+  effect: string;
+}
+
+export type GameCard = MonsterCard | WeaponCard | ArtifactCard | PotionCard | SpellCard | BoobyTrapCard;
+
+// ─── MONSTER CARDS ───────────────────────────────────────────
+
+export const monsterCards: MonsterCard[] = [
+  {
+    category: "monster",
+    id: "carrion-crawler",
+    name: "Carrion Crawler",
+    count: 2,
+    ac: 2,
+    hp: 7,
+    move: 4,
+    description: "Carrion Crawlers feast on decaying flesh but will attack anything with their paralysing tentacles.",
+    specialAbility: "Paralyse",
+    specialAbilityDetail: "☆ = PARALYSE. Hero misses next turn.",
+    dice: ["Yellow", "Orange", "Purple"],
+  },
+  {
+    category: "monster",
+    id: "wraith",
+    name: "Wraith",
+    count: 3,
+    ac: 2,
+    hp: 6,
+    move: 5,
+    undead: true,
+    description: "Formless yet fearsome ghostly creatures, Wraiths despise all living things. They are powerless in sunlight. Cannot move into grassed areas. Can move through Heroes.",
+    specialAbility: "Incorporeal Attack",
+    specialAbilityDetail: "Ignore the Armour Class of Hero.",
+    dice: ["Yellow", "Orange", "Red"],
+  },
+  {
+    category: "monster",
+    id: "lich",
+    name: "Lich",
+    count: 1,
+    ac: 3,
+    hp: 12,
+    move: 5,
+    undead: true,
+    description: "The Lich is an insane, undead spellcaster who feasts on destruction.",
+    specialAbility: "Life Drain",
+    specialAbilityDetail: "When the Lich attacks he gains the Hit Points the Hero loses (cannot go above 12 Hit Points).",
+    dice: ["Red", "Orange", "Blue", "Yellow", "Red", "Blue"],
+  },
+  {
+    category: "monster",
+    id: "ogre",
+    name: "Ogre",
+    count: 4,
+    ac: 2,
+    hp: 8,
+    move: 3,
+    description: "Ogres are huge, ugly, greedy creatures that live for raiding and scavenging.",
+    dice: ["Yellow", "Yellow", "Red", "Red"],
+  },
+  {
+    category: "monster",
+    id: "troll",
+    name: "Troll",
+    count: 3,
+    ac: 2,
+    hp: 10,
+    move: 3,
+    description: "Trolls are massive, powerful and putrid. They know no fear and attack when hungry – which is all the time.",
+    specialAbility: "Regeneration",
+    specialAbilityDetail: "Regenerates 1 Hit Point each turn it is still alive (cannot go above 10 Hit Points).",
+    dice: ["Yellow", "Orange", "Red", "Purple"],
+  },
+  {
+    category: "monster",
+    id: "wight",
+    name: "Wight",
+    count: 2,
+    ac: 3,
+    hp: 4,
+    move: 4,
+    undead: true,
+    description: "Wights are twisted forms of undead men, who seek to destroy all life by draining their energy.",
+    specialAbility: "Energy Drain",
+    specialAbilityDetail: "Roll dice for each Hero in the room. ☆ = Hero loses that many Hit Points.",
+    dice: ["Yellow", "Yellow", "Red", "Red"],
+  },
+  {
+    category: "monster",
+    id: "gnoll",
+    name: "Gnoll",
+    count: 5,
+    ac: 2,
+    hp: 6,
+    move: 3,
+    description: "Part-hyena, Gnolls are evil, human-sized carnivores that wander in loose tribes.",
+    dice: ["Yellow", "Orange", "Purple"],
+    rangedDice: ["Blue", "Orange", "Yellow"],
+  },
+  {
+    category: "monster",
+    id: "goblin",
+    name: "Goblin",
+    count: 6,
+    ac: 1,
+    hp: 4,
+    move: 5,
+    description: "Goblins are small humanoids that many consider little more than a nuisance. However, they can be dangerous in gangs.",
+    dice: ["Yellow", "Orange", "Red"],
+  },
+  {
+    category: "monster",
+    id: "bugbear",
+    name: "Bugbear",
+    count: 4,
+    ac: 2,
+    hp: 7,
+    move: 4,
+    description: "Bugbears are large, muscular and aggressive. They stop at nothing to fulfil their greed.",
+    dice: ["Yellow", "Orange", "Orange", "Red"],
+  },
+  {
+    category: "monster",
+    id: "skeleton",
+    name: "Skeleton",
+    count: 6,
+    ac: 1,
+    hp: 4,
+    move: 5,
+    undead: true,
+    description: "Skeletons are undead Monsters, animated bones that obey the orders of their evil masters.",
+    dice: ["Yellow", "Blue"],
+  },
+  {
+    category: "monster",
+    id: "ooze",
+    name: "Ooze",
+    count: 3,
+    ac: 0,
+    hp: 2,
+    move: 2,
+    description: "Oozes are slimy, shapeless masses that live only to eat. They attack with an acid touch.",
+    specialAbility: "Dissolve Weapon",
+    specialAbilityDetail: "☆ = DISSOLVE WEAPON. Hero must discard current weapon.",
+    dice: ["Yellow", "Red", "Yellow"],
+  },
+  {
+    category: "monster",
+    id: "goblin-scout",
+    name: "Goblin Scout",
+    count: 1,
+    ac: 1,
+    hp: 8,
+    move: 10,
+    description: "These lightweight creatures are fleet of foot and cause annoyance by simply getting in the way.",
+    dice: ["Yellow", "Orange", "Red"],
+  },
+  {
+    category: "monster",
+    id: "goblin-archer",
+    name: "Goblin Archer",
+    count: 1,
+    ac: 1,
+    hp: 4,
+    move: 6,
+    description: "Goblin Archers make up for their weak armour and cowardly nature by keeping out of the way and unleashing fearsome ranged attacks.",
+    dice: ["Yellow", "Red", "Red"],
+    rangedDice: ["Yellow", "Red", "Red"],
+  },
+  {
+    category: "monster",
+    id: "gnoll-leader",
+    name: "Gnoll Leader",
+    count: 1,
+    ac: 1,
+    hp: 6,
+    move: 5,
+    description: "The strongest of the pack, the Gnoll Leader reigns with fear. By organising the pack, he helps them manoeuvre further.",
+    specialAbility: "Pack Leader",
+    specialAbilityDetail: "While Gnoll Leader is alive, all Gnolls have a movement of 5.",
+    dice: ["Yellow", "Orange", "Purple"],
+    rangedDice: ["Blue", "Orange", "Purple"],
+  },
+];
+
+// ─── WEAPON CARDS ────────────────────────────────────────────
+
+export const weaponCards: WeaponCard[] = [
+  // ── LEVEL 1 ──
+  {
+    category: "weapon",
+    id: "disobedient-servant-of-kord",
+    name: "Disobedient Servant of Kord",
+    level: 1,
+    type: "melee",
+    description: "A powerful magic sword which cannot be trusted.",
+    dice: ["Red", "Red", "Purple"],
+    specialAbility: "☆ = Does no damage.",
+  },
+  {
+    category: "weapon",
+    id: "harbinger-of-pain",
+    name: "Harbinger of Pain",
+    level: 1,
+    type: "melee",
+    description: "A weapon of almost unlimited power.",
+    dice: ["Orange", "Red", "Yellow"],
+    specialAbility: "☆ = Roll all dice again and add to total. Keep rolling until ☆ doesn't appear.",
+  },
+  {
+    category: "weapon",
+    id: "hammer-of-liberty",
+    name: "Hammer of Liberty",
+    level: 1,
+    type: "melee",
+    description: "Crafted deep underground by dwarven hands, this weapon has a core of mine rock.",
+    dice: ["Red", "Red"],
+    protectsFromParalysis: true,
+  },
+  {
+    category: "weapon",
+    id: "dragons-fury",
+    name: "Dragon's Fury",
+    level: 1,
+    type: "ranged",
+    description: "A bow carved from a single dragon bone, capable of devastating attacks.",
+    dice: ["Red"],
+    specialAbility: "☆ = Roll all dice again and add to total. Keep rolling until ☆ doesn't appear.",
+  },
+  {
+    category: "weapon",
+    id: "bow-of-freedom",
+    name: "Bow of Freedom",
+    level: 1,
+    type: "ranged",
+    description: "A longbow with magical properties.",
+    dice: ["Red", "Red", "Ranged"],
+    protectsFromParalysis: true,
+  },
+  {
+    category: "weapon",
+    id: "blade-of-the-banished-kings",
+    name: "Blade of the Banished Kings",
+    level: 1,
+    type: "melee",
+    description: "A finely-worked blade with ornate gilding, crafted using techniques long since lost.",
+    dice: ["Red", "Yellow"],
+    specialAbility: "☆ = Ignore Armour Class.",
+  },
+  {
+    category: "weapon",
+    id: "shortbow-of-the-ancients",
+    name: "Shortbow of the Ancients",
+    level: 1,
+    type: "ranged",
+    description: "Made of the oldest yew in the Ancient Elven Forest.",
+    dice: ["Orange", "Orange", "Yellow"],
+    specialAbility: "☆ = Get 1 Spell Point back.",
+  },
+  {
+    category: "weapon",
+    id: "faithful-axe-of-dwarven-kind",
+    name: "Faithful Axe of Dwarven Kind",
+    level: 1,
+    type: "melee",
+    description: "A trusted weapon of the dwarves, famed for its accuracy.",
+    dice: ["Orange", "Purple", "Ranged"],
+  },
+  {
+    category: "weapon",
+    id: "crossbow-of-faith",
+    name: "Crossbow of Faith",
+    level: 1,
+    type: "ranged",
+    description: "Strengthened with Pelor's runes to fly straight and true.",
+    dice: ["Orange", "Orange"],
+    specialAbility: "☆ = Get 1 Spell Point back.",
+  },
+  {
+    category: "weapon",
+    id: "flash-pellets",
+    name: "Flash Pellets",
+    level: 1,
+    type: "thrown",
+    description: "Explodes with a starburst of green and yellow sparks, which inflict light damage and can blind temporarily.",
+    dice: ["Orange", "Orange"],
+    specialAbility: "☆ = The Monster attacked misses next turn.",
+  },
+  {
+    category: "weapon",
+    id: "the-masters-axe",
+    name: "The Master's Axe",
+    level: 1,
+    type: "melee",
+    description: "Used for slashing and hacking, the double-forged steel blade is razor-sharp.",
+    dice: ["Orange", "Red"],
+    powerAttack: true,
+    specialAbility: "Power Attack. ☆ = Lose weapon.",
+  },
+  {
+    category: "weapon",
+    id: "double-handed-broadsword",
+    name: "Double-Handed Broadsword",
+    level: 1,
+    type: "melee",
+    description: "A weighty blade forged from the strongest steel, requiring much skill and physical strength.",
+    dice: ["Orange", "Orange"],
+  },
+  {
+    category: "weapon",
+    id: "bone-cleaver",
+    name: "Bone Cleaver",
+    level: 1,
+    type: "melee",
+    description: "A brutal blade that stops at nothing.",
+    dice: ["Orange", "Red"],
+    powerAttack: true,
+    specialAbility: "Power Attack. ☆ = Lose weapon.",
+  },
+  {
+    category: "weapon",
+    id: "phoenix-bow",
+    name: "Phoenix Bow",
+    level: 1,
+    type: "ranged",
+    description: "Fires arrows flighted with Phoenix feathers that catch fire in flight. Gains +1 in attack for its user against Gnolls.",
+    dice: ["Orange", "Red", "Ranged"],
+  },
+  {
+    category: "weapon",
+    id: "poisoned-blow-pipe",
+    name: "Poisoned Blow Pipe",
+    level: 1,
+    type: "ranged",
+    description: "Lightweight and effective, firing darts tipped with venom from the Black Rider scorpion.",
+    dice: ["Orange", "Red", "Ranged"],
+  },
+  {
+    category: "weapon",
+    id: "single-handed-broadsword",
+    name: "Single-Handed Broadsword",
+    level: 1,
+    type: "melee",
+    description: "A light, yet powerful blade with excellent handling, ideal for close combat.",
+    dice: ["Red"],
+  },
+  {
+    category: "weapon",
+    id: "blessed-bow-of-the-elves",
+    name: "Blessed Bow of the Elves",
+    level: 1,
+    type: "ranged",
+    description: "Smaller and lighter than most bows, it uses magic elven twine for tremendous accuracy.",
+    dice: ["Orange", "Red", "Yellow", "Ranged"],
+    specialAbility: "☆ = Get 1 Spell Point back.",
+  },
+  {
+    category: "weapon",
+    id: "tortured-sword-of-slavery",
+    name: "Tortured Sword of Slavery",
+    level: 1,
+    type: "melee",
+    description: "Originally used by slave traders, this blade contains the souls of the tormented, screaming whenever it is used.",
+    dice: ["Orange", "Red", "Red", "Yellow"],
+    specialAbility: "☆ = Hero loses 1 Hit Point.",
+  },
+  {
+    category: "weapon",
+    id: "mace-of-faith",
+    name: "Mace of Faith",
+    level: 1,
+    type: "melee",
+    description: "A heavy mace that strikes vicious blows.",
+    dice: ["Orange", "Yellow"],
+    specialAbility: "☆ = Get 1 Spell Point back.",
+  },
+  {
+    category: "weapon",
+    id: "balanced-throwing-dagger",
+    name: "Balanced Throwing Dagger",
+    level: 1,
+    type: "thrown",
+    description: "Finely-tuned for deadly accuracy.",
+    dice: ["Orange", "Orange"],
+    powerAttack: true,
+    specialAbility: "Power Attack. ☆ = Lose weapon.",
+  },
+  // ── LEVEL 2 ──
+  {
+    category: "weapon",
+    id: "auger-of-torment",
+    name: "Auger of Torment",
+    level: 2,
+    type: "melee",
+    description: "A sharpened point with a twisting corkscrew blade. It ignores Armour Class, but costs 2 Actions to use.",
+    dice: ["Orange", "Red", "Red"],
+    specialAbility: "Ignores Armour Class. Costs 2 Actions to use.",
+  },
+  {
+    category: "weapon",
+    id: "mace-of-deliverance",
+    name: "Mace of Deliverance",
+    level: 2,
+    type: "melee",
+    description: "Weighted heavily at its top, the mace has a devastating effect when it makes contact.",
+    dice: ["Orange", "Orange", "Red", "Yellow"],
+    specialAbility: "☆ = 'Turn' Monster if Undead.",
+  },
+  {
+    category: "weapon",
+    id: "great-sword",
+    name: "Great Sword",
+    level: 2,
+    type: "melee",
+    description: "A flat, shimmering blade with sharp edges and fearsome strength.",
+    dice: ["Orange", "Red", "Red"],
+  },
+  {
+    category: "weapon",
+    id: "relentless-bolass",
+    name: "Relentless Bolass",
+    level: 2,
+    type: "thrown",
+    description: "Chokes victim and does not let go.",
+    dice: ["Yellow", "Yellow"],
+    powerAttack: true,
+    specialAbility: "Power Attack: Roll dice 3 times. Combine total. Discard after use.",
+  },
+  {
+    category: "weapon",
+    id: "longbow-of-the-elven-lords",
+    name: "Longbow of the Elven Lords",
+    level: 2,
+    type: "ranged",
+    description: "An ancient bow once used to defend the magical strongholds of the elven leaders.",
+    dice: ["Yellow", "Red"],
+    specialAbility: "☆ = Get 1 Spell Point back.",
+  },
+  {
+    category: "weapon",
+    id: "skull-splitter",
+    name: "Skull-Splitter",
+    level: 2,
+    type: "melee",
+    description: "This weapon has finely-sharpened blades that cut deep.",
+    dice: ["Red", "Purple"],
+    powerAttack: true,
+    specialAbility: "Power Attack. ☆ = Lose weapon.",
+  },
+  {
+    category: "weapon",
+    id: "gauntlet-of-misery",
+    name: "Gauntlet of Misery",
+    level: 2,
+    type: "melee",
+    description: "Haunted by the great Hero who wore it in his final battle, the gauntlet carries his might and his restless spirit.",
+    dice: ["Orange", "Orange", "Purple", "Ranged"],
+  },
+  {
+    category: "weapon",
+    id: "exploding-clusters",
+    name: "Exploding Clusters",
+    level: 2,
+    type: "thrown",
+    description: "Explode on contact. Can inflict serious wounds with a direct hit.",
+    dice: ["Purple"],
+    specialAbility: "☆ = Doubles attack.",
+  },
+  {
+    category: "weapon",
+    id: "sacred-crossbow-of-pelor",
+    name: "Sacred Crossbow of Pelor",
+    level: 2,
+    type: "ranged",
+    description: "Shoots magic bolts that twist on impact.",
+    dice: ["Red", "Red", "Yellow"],
+    specialAbility: "☆ = Get 1 Spell Point back.",
+  },
+  {
+    category: "weapon",
+    id: "composite-longbow",
+    name: "Composite Longbow",
+    level: 2,
+    type: "ranged",
+    description: "Formed from two lightweight but extremely strong materials, this bow is highly flexible and very powerful.",
+    dice: ["Orange", "Orange", "Red"],
+  },
+  // ── LEVEL 3 ──
+  {
+    category: "weapon",
+    id: "screaming-banshee",
+    name: "Screaming Banshee",
+    level: 3,
+    type: "ranged",
+    description: "An ancient bow that fires an arrow which screams as it flies.",
+    dice: ["Orange", "Orange"],
+    powerAttack: true,
+    specialAbility: "Power Attack. ☆ = Lose weapon.",
+  },
+  {
+    category: "weapon",
+    id: "death-bringer",
+    name: "Death-Bringer",
+    level: 3,
+    type: "melee",
+    description: "One of the most powerful blades in existence.",
+    dice: ["Purple", "Purple"],
+    powerAttack: true,
+    specialAbility: "Power Attack. ☆ = Lose weapon.",
+  },
+  {
+    category: "weapon",
+    id: "poleaxe",
+    name: "Poleaxe",
+    level: 3,
+    type: "melee",
+    description: "A highly-sharpened blade and the weapon's length make it excellent for holding enemies at bay.",
+    dice: ["Orange", "Red", "Purple"],
+    powerAttack: true,
+    specialAbility: "Power Attack. ☆ = Lose weapon.",
+  },
+  {
+    category: "weapon",
+    id: "kords-axe-of-wrath",
+    name: "Kord's Axe of Wrath",
+    level: 3,
+    type: "melee",
+    description: "This fearsome weapon is used by the defenders of Kord's faith.",
+    dice: ["Orange", "Orange", "Purple"],
+    powerAttack: true,
+    specialAbility: "Power Attack. ☆ = Lose weapon.",
+  },
+  {
+    category: "weapon",
+    id: "the-liberator",
+    name: "The Liberator",
+    level: 3,
+    type: "melee",
+    description: "The favoured weapon of Carrion Crawler hunters.",
+    dice: ["Yellow", "Orange"],
+    protectsFromParalysis: true,
+  },
+  {
+    category: "weapon",
+    id: "medusas-petrifying-bow",
+    name: "Medusa's Petrifying Bow",
+    level: 3,
+    type: "ranged",
+    description: "Can petrify a Monster, turning them to stone for one turn.",
+    dice: ["Yellow", "Orange", "Yellow"],
+    specialAbility: "☆ = The Monster attacked misses its next turn.",
+  },
+  {
+    category: "weapon",
+    id: "hammer-of-submission",
+    name: "Hammer of Submission",
+    level: 3,
+    type: "melee",
+    description: "A shaft hewn from oak, crowned with a double-headed hammer.",
+    dice: ["Red", "Purple", "Blue"],
+  },
+];
+
+// ─── ARTIFACT CARDS ──────────────────────────────────────────
+
+export const artifactCards: ArtifactCard[] = [
+  {
+    category: "artifact",
+    id: "yondallas-amulet",
+    name: "Yondalla's Amulet",
+    level: 1,
+    description: "Engraved with magical symbols.",
+    effect: "When you open a chest, draw 1 card and choose whether to keep it. If not, discard and take another. Repeat up to 3 times. If a booby trap is drawn it must be actioned and your turn ends.",
+    discardCondition: "☆ = Discard Ring.",
+  },
+  {
+    category: "artifact",
+    id: "ring-of-shadows",
+    name: "Ring of Shadows",
+    level: 1,
+    description: "Put this on to fade into the darkness of the background.",
+    effect: "Move anywhere in the room undetected, then roll die.",
+    discardCondition: "☆ = Discard Ring.",
+  },
+  {
+    category: "artifact",
+    id: "summoners-horn",
+    name: "Summoner's Horn",
+    level: 1,
+    description: "Blow this to summon help.",
+    effect: "Move any Hero to any space next to you, then roll die.",
+    discardCondition: "☆ = Discard Horn.",
+  },
+  {
+    category: "artifact",
+    id: "olidammaras-amulet",
+    name: "Olidammara's Amulet",
+    level: 1,
+    description: "Charmed with the wisdom of many.",
+    effect: "Lets the wearer use the Search die to look for traps.",
+  },
+  {
+    category: "artifact",
+    id: "barkskin-cloak",
+    name: "Barkskin Cloak",
+    level: 1,
+    description: "Sewn from the magic trees of Arnhalm.",
+    effect: "Wear this to take no damage from an attack or event, then roll die.",
+    discardCondition: "☆ = Discard Cloak.",
+  },
+  {
+    category: "artifact",
+    id: "yondallas-fortune",
+    name: "Yondalla's Fortune",
+    level: 3,
+    description: "Latched to an elven pool, it reflects whatever it sees.",
+    effect: "When opening a chest, draw 4 cards and choose 2 to keep. Booby traps cause no harm. Then roll die.",
+    discardCondition: "☆ = Discard Ring.",
+  },
+  {
+    category: "artifact",
+    id: "elven-mirror-shield",
+    name: "Elven Mirror Shield",
+    level: 3,
+    description: "Found in an elven pool, it reflects whatever it sees.",
+    effect: "Attacker takes damage from dice roll instead of you. Then roll die.",
+    discardCondition: "☆ = Discard Shield.",
+  },
+  {
+    category: "artifact",
+    id: "shield-of-chaos",
+    name: "Shield of Chaos",
+    level: 3,
+    description: "Forged in a fit of dwarven rage, this shield behaves unpredictably.",
+    effect: "Deflect Hit Point damage onto another Hero, then roll die.",
+    discardCondition: "☆ = Discard Shield.",
+  },
+  {
+    category: "artifact",
+    id: "cloak-of-boccob",
+    name: "Cloak of Boccob",
+    level: 3,
+    description: "This cloak has magic woven into it to absorb physical blows.",
+    effect: "Boosts Armour Class to 3 for this attack, then roll die.",
+    discardCondition: "☆ = Discard Cloak.",
+  },
+  {
+    category: "artifact",
+    id: "true-seeing-orb",
+    name: "True-Seeing Orb",
+    level: 3,
+    description: "Once belonging to wise lords, it brings a powerful gift of vision.",
+    effect: "Reveal all the traps in the room.",
+    discardCondition: "Discard after use.",
+  },
+  {
+    category: "artifact",
+    id: "bag-of-bones",
+    name: "Bag of Bones",
+    level: 3,
+    description: "Attacks all undead Monsters in the current room.",
+    effect: "Attacks all undead Monsters in the current room.",
+    discardCondition: "☆ = Discard card.",
+  },
+  {
+    category: "artifact",
+    id: "horn-of-evil-summons",
+    name: "Horn of Evil Summons",
+    level: 3,
+    description: "The mournful sound made by blowing this ancient horn draws any Monster in the current room to a space next to you.",
+    effect: "Draws any Monster in the current room to a space next to you.",
+    discardCondition: "☆ = Discard card.",
+  },
+];
+
+// ─── POTION CARDS ────────────────────────────────────────────
+
+export const potionCards: PotionCard[] = [
+  // ── LEVEL 1 ──
+  {
+    category: "potion",
+    id: "potion-of-initiative",
+    name: "Potion of Initiative",
+    level: 1,
+    description: "Drink this to change the order of play.",
+    effect: "Swap Initiative cards with any other player including the DM.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-cure-light-wounds",
+    name: "Potion of Cure Light Wounds",
+    level: 1,
+    description: "Drink this to revive strength.",
+    effect: "Restore up to 3 Hit Points.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-greater-restoration-l1",
+    name: "Potion of Greater Restoration",
+    level: 1,
+    description: "Bring a Hero back from the dead.",
+    effect: "Bring a Hero back from the dead and restore to 4 Hit Points and to 4 Spell Points if possible. Stand next to Hero to restore.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-kords-blessing",
+    name: "Potion of Kord's Blessing",
+    level: 1,
+    description: "Drink this to bless one of your weapons.",
+    effect: "Doubles the power of the chosen weapon's next attack.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-weakness",
+    name: "Potion of Weakness",
+    level: 1,
+    description: "Drink this to weaken a Monster.",
+    effect: "Reduce one Monster's Armour Class to 0 until the start of the DM's next turn.",
+  },
+  {
+    category: "potion",
+    id: "lesser-potion-of-restoration",
+    name: "Lesser Potion of Restoration",
+    level: 1,
+    description: "Drink this to revive magical power.",
+    effect: "Restore up to 3 Spell Points.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-shadow-smoke",
+    name: "Potion of Shadow Smoke",
+    level: 1,
+    description: "Drink this potion to cast a thick cloud over all the Monsters in the room.",
+    effect: "Every Hero in the room may have one free movement.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-hideous-laughter",
+    name: "Potion of Hideous Laughter",
+    level: 1,
+    description: "Drink this to make one Monster in the room collapse helplessly.",
+    effect: "Monster misses its next turn.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-the-forceful-hand",
+    name: "Potion of the Forceful Hand",
+    level: 1,
+    description: "Drink this to summon a helping hand.",
+    effect: "Move any Monster anywhere in its current room.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-olidammaras-hindsight",
+    name: "Potion of Olidammara's Hindsight",
+    level: 1,
+    description: "Drink this when a trap is sprung.",
+    effect: "Trap has no effect.",
+  },
+  // ── LEVEL 2 ──
+  {
+    category: "potion",
+    id: "potion-of-stop-time",
+    name: "Potion of Stop Time",
+    level: 2,
+    description: "Drink this to stop time for enemies.",
+    effect: "All Monsters in the room miss one turn.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-adrenalin-boost",
+    name: "Potion of Adrenalin Boost",
+    level: 2,
+    description: "Drink this to speed up your reactions.",
+    effect: "Make an attack immediately (even if it is not your turn).",
+  },
+  {
+    category: "potion",
+    id: "potion-of-sudden-attack",
+    name: "Potion of Sudden Attack",
+    level: 2,
+    description: "Drink this to inflict instant damage on a Monster.",
+    effect: "Do 2 Hit Points' damage to any Monster in the room.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-restoration",
+    name: "Potion of Restoration",
+    level: 2,
+    description: "Drink this to revive magical power.",
+    effect: "Restore up to 4 Spell Points.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-cure-moderate-wounds",
+    name: "Potion of Cure Moderate Wounds",
+    level: 2,
+    description: "Drink this to revive strength.",
+    effect: "Restore up to 4 Hit Points.",
+  },
+  // ── LEVEL 3 ──
+  {
+    category: "potion",
+    id: "potion-of-greater-restoration-l3",
+    name: "Potion of Greater Restoration",
+    level: 3,
+    description: "Drink this to revive magical power.",
+    effect: "Restore up to 5 Hit Points. Restore up to 5 Spell Points.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-cure-serious-wounds",
+    name: "Potion of Cure Serious Wounds",
+    level: 3,
+    description: "Drink this to revive strength.",
+    effect: "Restore up to 5 Hit Points.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-greater-weakness",
+    name: "Potion of Greater Weakness",
+    level: 3,
+    description: "Drink this to weaken Monsters.",
+    effect: "Reduce the Armour Class of all Monsters in the room to 0 until the start of the DM's next turn.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-the-healing-circle",
+    name: "Potion of the Healing Circle",
+    level: 3,
+    description: "Drink this potion to form a restorative circle around all Heroes.",
+    effect: "Restore up to 2 Hit Points to each Hero.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-hindsight",
+    name: "Potion of Hindsight",
+    level: 3,
+    description: "Drink this to step back in time.",
+    effect: "Force the last dice roll to be re-rolled.",
+  },
+  {
+    category: "potion",
+    id: "potion-of-magical-renewal",
+    name: "Potion of Magical Renewal",
+    level: 3,
+    description: "Drink this potion to exchange your Hit Points for Spell Points.",
+    effect: "1 Hit Point = 1 Spell Point.",
+  },
+];
+
+// ─── SPELL CARDS ─────────────────────────────────────────────
+
+export const spellCards: SpellCard[] = [
+  // ── LEVEL 1 ──
+  {
+    category: "spell",
+    id: "unseen-servant",
+    name: "Unseen Servant",
+    level: 1,
+    description: "A mysterious hand is summoned from above.",
+    effect: "Pushes one Monster in the current room in any direction, up to its maximum movement allowance.",
+    dice: ["Yellow", "Orange"],
+  },
+  {
+    category: "spell",
+    id: "melfs-acid-arrow",
+    name: "Melf's Acid Arrow",
+    level: 1,
+    description: "A toxic bolt that can burn straight through armour.",
+    effect: "☆ = Ignore Armour Class to do direct damage.",
+    dice: ["Orange", "Purple"],
+  },
+  {
+    category: "spell",
+    id: "ray-of-frost",
+    name: "Ray of Frost",
+    level: 1,
+    description: "Throws an icy blast through the air.",
+    effect: "☆ = Freezes Monster, making it miss its next turn.",
+    dice: ["Orange", "Red"],
+  },
+  {
+    category: "spell",
+    id: "flame-arrow",
+    name: "Flame Arrow",
+    level: 1,
+    description: "Fiery bolts that burn when they hit their target.",
+    effect: "Then roll die.",
+    dice: ["Orange", "Red", "Purple"],
+  },
+  {
+    category: "spell",
+    id: "lesser-healing-circle",
+    name: "Lesser Healing Circle",
+    level: 1,
+    description: "This spell is cast as a protective shield over all the Heroes in the room.",
+    effect: "Give each Hero +1 Hit Point of healing. Then roll die. ☆ = All Heroes receive +1 Hit Points instead.",
+    dice: ["Yellow"],
+  },
+  {
+    category: "spell",
+    id: "burning-hands",
+    name: "Burning Hands",
+    level: 1,
+    description: "Shoot streams of fire roaring from your fingertips, burning all they touch.",
+    effect: "Then roll die.",
+    dice: ["Orange", "Purple"],
+  },
+  {
+    category: "spell",
+    id: "magic-missile",
+    name: "Magic Missile",
+    level: 1,
+    description: "Raw energy fired straight from the hand.",
+    effect: "Then roll die.",
+    dice: ["Orange"],
+  },
+  {
+    category: "spell",
+    id: "forcecage",
+    name: "Forcecage",
+    level: 1,
+    description: "Pure energy that forms a cage which traps the Monster, forcing it to miss its next turn.",
+    effect: "☆ = Traps the Monster, forcing it to miss its next turn.",
+    dice: ["Yellow", "Yellow"],
+    singleUse: true,
+    restriction: "Single use per adventure.",
+  },
+  {
+    category: "spell",
+    id: "greater-restoration-spell",
+    name: "Greater Restoration",
+    level: 1,
+    description: "Bring a Hero back from the dead and restore to 4 Hit Points and to 4 Spell Points if possible.",
+    effect: "Stand next to dead Hero to restore them.",
+    dice: [],
+    restriction: "Jozan only.",
+  },
+  {
+    category: "spell",
+    id: "shield-of-boccob",
+    name: "Shield of Boccob",
+    level: 1,
+    description: "All Heroes are protected from melee attacks until the end of the DM's next turn.",
+    effect: "All Heroes are protected from melee attacks until end of DM's next turn.",
+    dice: [],
+  },
+  // ── LEVEL 2 ──
+  {
+    category: "spell",
+    id: "fireball",
+    name: "Fireball",
+    level: 2,
+    description: "Roars across the room in a whirl of flame.",
+    effect: "Then roll die.",
+    dice: ["Orange", "Red"],
+  },
+  {
+    category: "spell",
+    id: "cone-of-cold",
+    name: "Cone of Cold",
+    level: 2,
+    description: "A freezing ray that chills to the bone.",
+    effect: "☆ = Freeze Monster, making it miss next turn. Does not affect Undead.",
+    dice: ["Red", "Red"],
+  },
+  {
+    category: "spell",
+    id: "lightning-bolt",
+    name: "Lightning Bolt",
+    level: 2,
+    description: "With a thunderclap, this spell flashes into attack.",
+    effect: "Then roll die.",
+    dice: ["Red", "Purple"],
+  },
+  {
+    category: "spell",
+    id: "chain-lightning",
+    name: "Chain Lightning",
+    level: 2,
+    description: "Blue energy bolts shoot from your hands and leap around the room.",
+    effect: "☆ = Your Hero regains 1 Hit Point.",
+    dice: ["Orange", "Red", "Purple"],
+  },
+  {
+    category: "spell",
+    id: "spiritual-weapon",
+    name: "Spiritual Weapon",
+    level: 2,
+    description: "Summons the power of faith. Conjures a sword at your command to fight for you.",
+    effect: "☆ = Your Hero loses 1 Hit Point.",
+    dice: ["Orange", "Purple", "Red"],
+  },
+  // ── LEVEL 3 ──
+  {
+    category: "spell",
+    id: "fire-storm",
+    name: "Fire Storm",
+    level: 3,
+    description: "Droplets of molten fire are cast at the enemy in a shower of heat.",
+    effect: "Then roll die.",
+    dice: ["Red", "Red", "Purple"],
+  },
+  {
+    category: "spell",
+    id: "ice-storm",
+    name: "Ice Storm",
+    level: 3,
+    description: "Hard, icy shards strike violently and can freeze flesh on contact.",
+    effect: "☆ = Freeze Monster, making it miss next turn. Does not affect Undead.",
+    dice: ["Red", "Red"],
+  },
+  {
+    category: "spell",
+    id: "bigbys-clenched-fist",
+    name: "Bigby's Clenched Fist",
+    level: 3,
+    description: "Summons a giant hand to attack Monsters at your command.",
+    effect: "Then roll die.",
+    dice: ["Yellow", "Orange", "Red", "Purple"],
+  },
+  {
+    category: "spell",
+    id: "obscuring-mist",
+    name: "Obscuring Mist",
+    level: 3,
+    description: "A dank, grey drizzle falls, so thick you cannot see your hand.",
+    effect: "Each Hero has one free movement.",
+    dice: ["Yellow", "Orange"],
+  },
+  {
+    category: "spell",
+    id: "healing-circle",
+    name: "Healing Circle",
+    level: 3,
+    description: "This spell is cast as a protective shield over all the Heroes in the room.",
+    effect: "Give each Hero +2 Hit Points of healing. Then roll die. ☆ = All Heroes receive +1 Hit Points instead.",
+    dice: ["Yellow"],
+  },
+  {
+    category: "spell",
+    id: "flame-strike",
+    name: "Flame Strike",
+    level: 3,
+    description: "The Monster attacked is engulfed in flames.",
+    effect: "Then roll die.",
+    dice: ["Red", "Red", "Red", "Purple", "Purple", "Red"],
+  },
+  {
+    category: "spell",
+    id: "energy-shield",
+    name: "Energy Shield",
+    level: 3,
+    description: "Glowing brightly, this shield absorbs energy from Monsters.",
+    effect: "Protects all Heroes from ranged weapons and spells until the end of the DM's next turn.",
+    dice: [],
+  },
+];
+
+// ─── BOOBY TRAP CARDS ────────────────────────────────────────
+
+export const boobyTrapCards: BoobyTrapCard[] = [
+  {
+    category: "boobyTrap",
+    id: "brutal-betrayal",
+    name: "Brutal Betrayal",
+    level: 2,
+    description: "A dark spell is unleashed.",
+    effect: "Choose whether to take 5 Hit Points damage yourself or cause another Hero to suffer 3 Hit Points damage.",
+  },
+  {
+    category: "boobyTrap",
+    id: "call-from-the-grave",
+    name: "Call from the Grave",
+    level: 1,
+    description: "A ghostly power controls your mind.",
+    effect: "Revive the last Monster you defeated. DM places it anywhere in this room.",
+  },
+  {
+    category: "boobyTrap",
+    id: "voices-of-the-damned",
+    name: "Voices of the Damned",
+    level: 1,
+    description: "Unseen forces control your mind.",
+    effect: "Move next to and attack the nearest Hero with your current weapon.",
+  },
+  {
+    category: "boobyTrap",
+    id: "choking-mist",
+    name: "Choking Mist",
+    level: 1,
+    description: "A mist descends making it difficult to breathe.",
+    effect: "All living creatures in the room lose 1 Hit Point. Does not affect undead.",
+  },
+  {
+    category: "boobyTrap",
+    id: "blinding-light",
+    name: "Blinding Light",
+    level: 1,
+    description: "You are stunned by an intense flash.",
+    effect: "Miss your next turn.",
+  },
+  {
+    category: "boobyTrap",
+    id: "lose-magic",
+    name: "Lose Magic",
+    level: 3,
+    description: "You have entered a field of magic weakness.",
+    effect: "Lose 4 Spell Points.",
+  },
+  {
+    category: "boobyTrap",
+    id: "engulfing-flames",
+    name: "Engulfing Flames",
+    level: 3,
+    description: "Intense heat surrounds you.",
+    effect: "You and any Monster or Hero next to you lose 2 Hit Points.",
+  },
+];
+
+// ─── ALL CARDS ───────────────────────────────────────────────
+
+export const allCards: GameCard[] = [
+  ...monsterCards,
+  ...weaponCards,
+  ...artifactCards,
+  ...potionCards,
+  ...spellCards,
+  ...boobyTrapCards,
+];
+
+// ─── HELPERS ─────────────────────────────────────────────────
+
+export const categoryLabels: Record<CardCategory, string> = {
+  monster: "Monsters",
+  weapon: "Weapons",
+  artifact: "Artifacts",
+  potion: "Potions",
+  spell: "Spells",
+  boobyTrap: "Booby Traps",
+};
+
+export const categoryEmojis: Record<CardCategory, string> = {
+  monster: "💀",
+  weapon: "⚔️",
+  artifact: "🛡️",
+  potion: "🧪",
+  spell: "✨",
+  boobyTrap: "💥",
+};
+
+export const categoryColors: Record<CardCategory, string> = {
+  monster: "from-orange-900/80 to-orange-800/60",
+  weapon: "from-red-900/80 to-red-800/60",
+  artifact: "from-emerald-900/80 to-emerald-800/60",
+  potion: "from-green-700/80 to-green-600/60",
+  spell: "from-cyan-900/80 to-cyan-800/60",
+  boobyTrap: "from-amber-900/80 to-amber-800/60",
+};
+
+export const diceColorMap: Record<string, string> = {
+  Yellow: "bg-yellow-400 text-yellow-950",
+  Orange: "bg-orange-500 text-orange-950",
+  Red: "bg-red-600 text-red-100",
+  Purple: "bg-purple-700 text-purple-100",
+  Blue: "bg-blue-600 text-blue-100",
+  Ranged: "bg-stone-500 text-stone-100",
+};
