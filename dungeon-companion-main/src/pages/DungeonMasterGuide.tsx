@@ -105,7 +105,8 @@ const DungeonMasterGuide = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="monsters" onValueChange={() => playTabSwitch()} className="animate-fade-in" style={{ animationDelay: "150ms", opacity: 0 }}>
-          <TabsList className="w-full flex overflow-x-auto sm:grid sm:grid-cols-4 bg-secondary gap-0.5 sm:gap-0">
+          <div className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <TabsList className="flex w-max min-w-full bg-secondary gap-0.5">
             <TabsTrigger value="monsters" className="text-[11px] sm:text-xs px-2.5 sm:px-3 whitespace-nowrap data-[state=active]:text-gold">
               <Skull className="w-3.5 h-3.5 mr-1 shrink-0" /> Monsters
             </TabsTrigger>
@@ -119,6 +120,7 @@ const DungeonMasterGuide = () => {
               <Map className="w-3.5 h-3.5 mr-1 shrink-0" /> Quests
             </TabsTrigger>
           </TabsList>
+          </div>
 
           {/* Monsters Tab */}
           <TabsContent value="monsters" className="mt-4 space-y-4">

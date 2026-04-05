@@ -12,7 +12,8 @@ import PlayersGuide from "./pages/PlayersGuide.tsx";
 import BoardGuide from "./pages/BoardGuide.tsx";
 import ScenarioMaker from "./pages/ScenarioMaker.tsx";
 import CardCompendium from "./pages/CardCompendium.tsx";
-import TurnBar from "./components/TurnBar.tsx";
+import InitiativeCardsPage from "./pages/InitiativeCards.tsx";
+import TurnBar from "@/components/TurnBar.tsx";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
               <Route path="/scenario-maker" element={<ScenarioMaker />} />
               <Route path="/dice-roller" element={<DiceRoller />} />
               <Route path="/card-compendium" element={<CardCompendium />} />
+              <Route path="/initiative" element={<InitiativeCardsPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

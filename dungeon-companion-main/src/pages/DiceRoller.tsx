@@ -47,6 +47,8 @@ const DiceRoller = () => {
         setLastResult({ die, face: finalFace });
         setAnimFace(null);
         setRollingDieId(null);
+        // Scroll to top so user sees the result
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }, 70);
   }, [rollingDieId]);

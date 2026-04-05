@@ -77,15 +77,11 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const setupGame = useCallback((players: Player[]) => {
-    // Build initial turn order: DM + all hero players
-    const dm = players.find(p => p.isDM);
-    const heroPlayers = players.filter(p => !p.isDM);
-    const order = [...heroPlayers.map(p => p.id), ...(dm ? [dm.id] : [])];
-    
+    // Don't assign turn order yet — wait for initiative shuffle
     const newState: GameState = {
       players,
       currentTurnIndex: 0,
-      turnOrder: order,
+      turnOrder: [],
       adventureLevel: 1,
       isSetupComplete: true,
       turnVersion: 0,

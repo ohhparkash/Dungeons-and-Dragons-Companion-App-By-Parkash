@@ -196,31 +196,42 @@ export function playDiceRoll() {
   try {
     const c = ctx();
     const now = c.currentTime;
-    // Gentle wooden taps that decelerate
-    const taps = [0, 0.06, 0.13, 0.21, 0.30, 0.41, 0.54, 0.70];
+    // Wooden dice tumble — louder, more impactful
+    const taps = [0, 0.05, 0.11, 0.18, 0.26, 0.36, 0.48, 0.62];
     taps.forEach((delay, i) => {
-      const vol = 0.05 * (1 - i * 0.1);
-      const freq = 300 + Math.random() * 200;
-      const len = c.sampleRate * 0.025;
+      const vol = 0.35 * (1 - i * 0.08);
+      const freq = 250 + Math.random() * 300;
+      const len = c.sampleRate * 0.04;
       const buf = c.createBuffer(1, len, c.sampleRate);
       const d = buf.getChannelData(0);
       for (let j = 0; j < len; j++) {
-        d[j] = (Math.random() * 2 - 1) * Math.exp(-j / (len * 0.12));
+        d[j] = (Math.random() * 2 - 1) * Math.exp(-j / (len * 0.15));
       }
       const src = c.createBufferSource();
       src.buffer = buf;
       const bp = c.createBiquadFilter();
       bp.type = "bandpass";
       bp.frequency.value = freq;
-      bp.Q.value = 1.5;
+      bp.Q.value = 1.2;
       const lp = c.createBiquadFilter();
       lp.type = "lowpass";
-      lp.frequency.value = 1800;
+      lp.frequency.value = 2400;
       const g = c.createGain();
-      g.gain.value = Math.max(vol, 0.008);
+      g.gain.value = Math.max(vol, 0.05);
       src.connect(bp).connect(lp).connect(g).connect(c.destination);
       src.start(now + delay);
     });
+    // Add a low thud for weight
+    const thud = c.createOscillator();
+    thud.type = "sine";
+    thud.frequency.setValueAtTime(120, now);
+    thud.frequency.exponentialRampToValueAtTime(60, now + 0.15);
+    const tg = c.createGain();
+    tg.gain.setValueAtTime(0.2, now);
+    tg.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+    thud.connect(tg).connect(c.destination);
+    thud.start(now);
+    thud.stop(now + 0.25);
     hapticMedium();
   } catch {}
 }

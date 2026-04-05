@@ -8,7 +8,6 @@ import iconBoard from "@/assets/icon-board.png";
 import iconScenario from "@/assets/icon-scenario.png";
 import iconDice from "@/assets/icon-dice.png";
 import iconCards from "@/assets/icon-cards.png";
-import iconInitiative from "@/assets/card-back.jpg";
 import heroRegdar from "@/assets/hero-regdar.png";
 import heroJozan from "@/assets/hero-jozan.png";
 import heroMialee from "@/assets/hero-mialee.png";
@@ -23,7 +22,6 @@ const MainMenu = () => {
   const isDM = current?.isDM ?? false;
 
   const menuItems = [
-    { title: "Initiative Cards", description: "Shuffle turn order for the party", image: iconInitiative, path: "/initiative", dmOnly: false },
     { title: "Dungeon Master Guide", description: "Monsters, items, and DM rules", image: iconDm, path: "/dm-guide", dmOnly: true },
     { title: "Player's Guide", description: "Heroes, stats, and abilities", image: iconPlayers, path: "/player-guide", dmOnly: false },
     { title: "Board Guide", description: "Traps, terrain, and interactions", image: iconBoard, path: "/board-guide", dmOnly: false },

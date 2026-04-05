@@ -147,7 +147,8 @@ const PlayersGuide = () => {
 
         {/* Tabs */}
         <Tabs defaultValue="heroes" onValueChange={() => playTabSwitch()} className="animate-fade-in" style={{ animationDelay: "150ms", opacity: 0 }}>
-          <TabsList className="w-full grid grid-cols-3 bg-secondary">
+          <div className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <TabsList className="flex w-max min-w-full bg-secondary">
             <TabsTrigger value="heroes" className="text-[11px] sm:text-xs data-[state=active]:text-gold">
               <Users className="w-3.5 h-3.5 mr-1 shrink-0" /> Heroes
             </TabsTrigger>
@@ -158,6 +159,7 @@ const PlayersGuide = () => {
               <Swords className="w-3.5 h-3.5 mr-1 shrink-0" /> Combat
             </TabsTrigger>
           </TabsList>
+          </div>
 
           {/* Heroes Tab */}
           <TabsContent value="heroes" className="mt-4 space-y-2">

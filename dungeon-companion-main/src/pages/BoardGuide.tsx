@@ -73,7 +73,8 @@ const BoardGuide = () => {
         </section>
 
         <Tabs defaultValue="elements" onValueChange={() => playTabSwitch()} className="animate-fade-in" style={{ animationDelay: "150ms", opacity: 0 }}>
-          <TabsList className="w-full grid grid-cols-3 bg-secondary">
+          <div className="overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <TabsList className="flex w-max min-w-full bg-secondary">
             <TabsTrigger value="elements" className="text-[11px] sm:text-xs data-[state=active]:text-gold">
               <BookOpen className="w-3.5 h-3.5 mr-1 shrink-0" /> Elements
             </TabsTrigger>
@@ -84,6 +85,7 @@ const BoardGuide = () => {
               ⚔️ Game Flow
             </TabsTrigger>
           </TabsList>
+          </div>
 
           {/* Elements Tab */}
           <TabsContent value="elements" className="mt-4 space-y-4">

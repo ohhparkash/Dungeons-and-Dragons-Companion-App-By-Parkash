@@ -1,8 +1,8 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Trash2, Download, Upload, RotateCcw, ZoomIn, ZoomOut, Grid3X3, Eraser, ChevronUp, ChevronDown } from "lucide-react";
+import { ArrowLeft, Trash2, Download, Upload, RotateCcw, ZoomIn, ZoomOut, Grid3X3, Eraser, ChevronUp, ChevronDown, BookOpen, X, Scroll, Shield, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { playBack, playTap } from "@/utils/sound-engine";
+import { playBack, playTap, playSelect } from "@/utils/sound-engine";
 import {
   PIECE_DEFINITIONS,
   CATEGORIES,
@@ -11,6 +11,7 @@ import {
   type PlacedPiece,
   type Scenario,
 } from "@/data/scenario-maker-data";
+import { PREDEFINED_ADVENTURES, type PredefinedAdventure } from "@/data/predefined-scenarios";
 
 const DEFAULT_ROWS = 16;
 const DEFAULT_COLS = 20;
@@ -37,7 +38,26 @@ const ScenarioMaker = () => {
   const [history, setHistory] = useState<PlacedPiece[][]>([[]]);
   const [historyIdx, setHistoryIdx] = useState(0);
   const [mobilePaletteOpen, setMobilePaletteOpen] = useState(true);
+  const [showAdventures, setShowAdventures] = useState(false);
+  const [selectedAdventure, setSelectedAdventure] = useState<PredefinedAdventure | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const loadAdventure = useCallback((adv: PredefinedAdventure) => {
+    playSelect();
+    setScenarioName(`Adventure ${adv.number}: ${adv.name}`);
+    setGridRows(adv.gridRows);
+    setGridCols(adv.gridCols);
+    // Generate unique UIDs for loaded pieces
+    const loadedPieces = adv.pieces.map((piece, i) => ({
+      ...piece,
+      uid: `adv_${adv.id}_${i}_${Date.now()}`,
+    }));
+    setPieces(loadedPieces);
+    setHistory([loadedPieces]);
+    setHistoryIdx(0);
+    setSelectedAdventure(adv);
+    setShowAdventures(false);
+  }, []);
 
   const pushHistory = useCallback(
     (next: PlacedPiece[]) => {
@@ -335,7 +355,7 @@ const ScenarioMaker = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <header className="border-b border-border px-3 md:px-4 py-2 md:py-3 flex items-center gap-2 md:gap-3 shrink-0">
+      <header className="border-b border-border px-3 md:px-4 py-2 md:py-3 flex flex-wrap md:flex-nowrap items-center gap-2 md:gap-3 shrink-0">
         <Button variant="ghost" size="icon" onClick={() => { playBack(); navigate("/"); }} className="text-gold shrink-0">
           <ArrowLeft className="w-5 h-5" />
         </Button>
@@ -343,13 +363,13 @@ const ScenarioMaker = () => {
           <input
             value={scenarioName}
             onChange={(e) => setScenarioName(e.target.value)}
-            className="bg-transparent text-foreground font-heading text-sm md:text-lg border-b border-transparent hover:border-border focus:border-gold focus:outline-none px-1 py-0.5 max-w-[140px] md:max-w-[220px]"
+            className="bg-transparent text-foreground font-heading text-sm md:text-lg border-b border-transparent hover:border-border focus:border-gold focus:outline-none px-1 py-0.5 w-full max-w-[180px] sm:max-w-[240px] md:max-w-[220px]"
           />
           <span className="text-muted-foreground text-xs hidden sm:inline">
             {gridCols}×{gridRows} • {pieces.length} pieces
           </span>
         </div>
-        <div className="flex items-center gap-0.5 md:gap-1">
+        <div className="order-3 w-full pt-1 flex items-center justify-end gap-0.5 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden md:order-none md:w-auto md:pt-0 md:overflow-visible md:justify-start md:gap-1">
           <Button variant="ghost" size="icon" onClick={undo} title="Undo" className="text-muted-foreground hover:text-foreground h-8 w-8 md:h-9 md:w-9">
             <RotateCcw className="w-3.5 h-3.5 md:w-4 md:h-4" />
           </Button>
@@ -363,10 +383,13 @@ const ScenarioMaker = () => {
             <ZoomOut className="w-3.5 h-3.5 md:w-4 md:h-4" />
           </Button>
           <div className="w-px h-5 bg-border mx-0.5 hidden md:block" />
-          <Button variant="ghost" size="icon" onClick={saveScenario} title="Save" className="text-gold hover:text-primary h-8 w-8 md:h-9 md:w-9">
+          <Button variant="ghost" size="icon" onClick={() => { playTap(); setShowAdventures(!showAdventures); }} title="Predefined Adventures" className="text-primary hover:text-primary h-8 w-8 md:h-9 md:w-9">
+            <BookOpen className="w-3.5 h-3.5 md:w-4 md:h-4" />
+          </Button>
+          <Button variant="ghost" size="icon" onClick={saveScenario} title="Save" className="text-primary hover:text-primary h-8 w-8 md:h-9 md:w-9">
             <Download className="w-3.5 h-3.5 md:w-4 md:h-4" />
           </Button>
-          <Button variant="ghost" size="icon" onClick={() => fileInputRef.current?.click()} title="Load" className="text-gold hover:text-primary h-8 w-8 md:h-9 md:w-9">
+          <Button variant="ghost" size="icon" onClick={() => fileInputRef.current?.click()} title="Load" className="text-primary hover:text-primary h-8 w-8 md:h-9 md:w-9">
             <Upload className="w-3.5 h-3.5 md:w-4 md:h-4" />
           </Button>
           <input ref={fileInputRef} type="file" accept=".json" className="hidden" onChange={loadScenario} />
@@ -376,7 +399,132 @@ const ScenarioMaker = () => {
         </div>
       </header>
 
-      {/* DESKTOP: sidebar left + board right */}
+      {/* Adventure Browser Panel */}
+      {showAdventures && (
+        <div className="border-b border-border bg-card/80 backdrop-blur-sm animate-fade-in">
+          <div className="px-3 md:px-4 py-3">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="font-heading text-sm font-bold text-primary tracking-wide flex items-center gap-2">
+                <Scroll className="w-4 h-4" />
+                Predefined Adventures
+              </h2>
+              <button onClick={() => setShowAdventures(false)} className="p-1 rounded hover:bg-secondary">
+                <X className="w-4 h-4 text-muted-foreground" />
+              </button>
+            </div>
+
+            {/* Level tabs */}
+            <div className="flex gap-4 mb-3">
+              {[1, 2, 3].map(level => (
+                <div key={level} className="flex-1">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <Shield className="w-3 h-3 text-primary" />
+                    <span className="text-[10px] font-heading font-semibold text-primary tracking-wider uppercase">Level {level}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Adventures horizontal scroll per level */}
+            <div className="space-y-3">
+              {[1, 2, 3].map(level => {
+                const adventures = PREDEFINED_ADVENTURES.filter(a => a.level === level);
+                return (
+                  <div key={level}>
+                    <div className="text-[10px] font-heading text-muted-foreground tracking-wider uppercase mb-1.5">
+                      Level {level} Adventures
+                    </div>
+                    <div className="flex gap-2 overflow-x-auto pb-2 [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1">
+                      {adventures.map(adv => (
+                        <button
+                          key={adv.id}
+                          onClick={() => loadAdventure(adv)}
+                          className={`shrink-0 w-48 sm:w-56 p-3 rounded-lg border text-left transition-all hover:border-primary/40 hover:bg-primary/5 active:scale-[0.98] ${
+                            selectedAdventure?.id === adv.id
+                              ? "border-primary/50 bg-primary/10"
+                              : "border-border bg-secondary/30"
+                          }`}
+                        >
+                          <div className="flex items-start gap-2">
+                            <span className="text-lg mt-0.5">
+                              {adv.level === 1 ? "⚔️" : adv.level === 2 ? "🛡️" : "👑"}
+                            </span>
+                            <div className="min-w-0">
+                              <div className="text-xs font-heading font-semibold text-foreground truncate">
+                                {adv.number}. {adv.name}
+                              </div>
+                              <div className="text-[10px] text-muted-foreground mt-0.5 line-clamp-2 leading-tight">
+                                {adv.objective}
+                              </div>
+                              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                                <span className="text-[9px] px-1.5 py-0.5 rounded bg-secondary text-muted-foreground">
+                                  {adv.pieces.length} pieces
+                                </span>
+                                {adv.traps.length > 0 && (
+                                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-destructive/10 text-destructive">
+                                    {adv.traps.reduce((s, t) => s + t.count, 0)} traps
+                                  </span>
+                                )}
+                                {adv.specialItems.length > 0 && (
+                                  <span className="text-[9px] px-1.5 py-0.5 rounded bg-primary/10 text-primary">
+                                    {adv.specialItems.length} special
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Adventure details */}
+            {selectedAdventure && (
+              <div className="mt-3 p-3 rounded-lg border border-primary/20 bg-primary/5 animate-fade-in">
+                <div className="text-xs font-heading font-bold text-primary mb-1">
+                  Adventure {selectedAdventure.number}: {selectedAdventure.name}
+                </div>
+                <p className="text-[10px] text-muted-foreground leading-relaxed mb-2">
+                  {selectedAdventure.description.slice(0, 200)}…
+                </p>
+                <div className="text-[10px] text-foreground mb-1">
+                  <strong>Objective:</strong> {selectedAdventure.objective}
+                </div>
+                {selectedAdventure.traps.length > 0 && (
+                  <div className="mt-1.5">
+                    <div className="text-[9px] font-semibold text-destructive mb-0.5">Traps:</div>
+                    {selectedAdventure.traps.map((t, i) => (
+                      <div key={i} className="text-[9px] text-muted-foreground">
+                        ⚠️ {t.count}x {t.name} — {t.effect}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {selectedAdventure.specialItems.length > 0 && (
+                  <div className="mt-1.5">
+                    <div className="text-[9px] font-semibold text-primary mb-0.5">Special Items:</div>
+                    {selectedAdventure.specialItems.map((item, i) => (
+                      <div key={i} className="text-[9px] text-muted-foreground">🏆 {item}</div>
+                    ))}
+                  </div>
+                )}
+                {selectedAdventure.specialRules.length > 0 && (
+                  <div className="mt-1.5">
+                    <div className="text-[9px] font-semibold text-accent mb-0.5">Special Rules:</div>
+                    {selectedAdventure.specialRules.map((rule, i) => (
+                      <div key={i} className="text-[9px] text-muted-foreground">📜 {rule}</div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       <div className="hidden md:flex flex-1 overflow-hidden">
         <aside className="w-56 lg:w-64 border-r border-border flex flex-col shrink-0 bg-card/50">
           <PaletteContent />

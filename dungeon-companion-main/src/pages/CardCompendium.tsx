@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Search, Skull, Swords, Shield, FlaskConical, Sparkles, Flame, Heart, Footprints, ChevronDown, ChevronRight } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { playBack, playTabSwitch, playCardFlip } from "@/utils/sound-engine";
 import {
   type GameCard,
@@ -213,7 +212,7 @@ const CardCompendium = () => {
       {/* Tabs */}
       <Tabs defaultValue="monster" onValueChange={() => playTabSwitch()} className="flex-1">
         <div className="sticky top-[96px] sm:top-[108px] z-10 bg-background/95 backdrop-blur border-b border-border">
-          <ScrollArea className="w-full">
+          <div className="overflow-x-auto overscroll-x-contain [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
             <TabsList className="flex w-max px-3 sm:px-4 py-1 gap-0.5 sm:gap-1 bg-transparent">
               {(["monster", "weapon", "potion", "spell", "artifact", "boobyTrap"] as CardCategory[]).map(cat => (
                 <TabsTrigger key={cat} value={cat} className="text-[11px] sm:text-xs px-2 sm:px-3 py-1.5 whitespace-nowrap data-[state=active]:bg-primary/20 data-[state=active]:text-primary">
@@ -221,7 +220,7 @@ const CardCompendium = () => {
                 </TabsTrigger>
               ))}
             </TabsList>
-          </ScrollArea>
+          </div>
         </div>
 
         {/* Level filter (for non-monster tabs) */}

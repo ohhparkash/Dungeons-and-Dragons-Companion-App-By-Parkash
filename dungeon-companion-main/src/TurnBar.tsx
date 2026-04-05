@@ -18,7 +18,7 @@ const HERO_IMAGES: Record<HeroId, string> = {
 const TurnBar = () => {
   const { state, getCurrentPlayer, nextTurn, resetGame } = useGame();
 
-  if (!state.isSetupComplete || state.players.length === 0 || state.turnOrder.length === 0) return null;
+  if (!state.isSetupComplete || state.players.length === 0) return null;
 
   const current = getCurrentPlayer();
   if (!current) return null;
